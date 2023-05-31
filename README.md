@@ -11,3 +11,7 @@ To read an image, do the following:
 2. Open ./outputs/testImages.csv and write the image's path 3 times.
 3. Run the server, and press the 'Run Python Script' button.
 4. Wait a few seconds and the output will be displayed right below the button.
+
+NOTE
+We pregenerated our D3 graphs due to performance issues.
+We uploaded the zip project with all the code used to generate them.
