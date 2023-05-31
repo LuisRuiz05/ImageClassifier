@@ -7,9 +7,7 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/py', (req, res) => {
-  console.log('Correct call');
-
+app.post('/py', (req, res) => {
   const script = spawn('python', ['py_scripts/test.py']);
 
   script.stdout.on('data', (data) => {
@@ -23,8 +21,6 @@ app.get('/py', (req, res) => {
   script.on('close', (code) => {
     console.log(`Script's exit code: ${code}`);
   });
-
-  res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
 app.listen(port, () => {
