@@ -7,9 +7,17 @@ const cheerio = require('cheerio');
 const app = express();
 const port = 3000;
 
-//const { changeText } = require('./public/js/script.js')
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) =>{
+  const html = fs.readFileSync('./public/index.html', 'utf8');
+  const $ = cheerio.load(html);
+
+  $('#result').text('');
+    
+  const modifiedHtml = $.html();  
+  fs.writeFileSync('./public/index.html', modifiedHtml, 'utf8');
+})
 
 app.get('/py', (req, res) => {
   const script = spawn('python', ['py_scripts/Project2.py']);
