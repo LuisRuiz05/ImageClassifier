@@ -1,15 +1,32 @@
-const fs = require('fs/promises');
-const { v4: uuid } = require('uuid');
-
+const { spawn } = require('child_process');
 const express = require('express');
 const path = require('path');
 
 const app = express();
+const port = 3000;
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "/index.html"));
-})
+app.get('/py', (req, res) => {
+  console.log('Correct call');
 
-app.listen(3000, () => { console.log("Server listening port 3000") });
+  const script = spawn('python', ['py_scripts/test.py']);
+
+  script.stdout.on('data', (data) => {
+    console.log(`Script result: ${data}`);
+  });
+
+  script.stderr.on('data', (data) => {
+    console.error(`Error executing script: ${data}`);
+  });
+
+  script.on('close', (code) => {
+    console.log(`Script's exit code: ${code}`);
+  });
+
+  res.sendFile(path.join(__dirname + "/public/index.html"));
+});
+
+app.listen(port, () => {
+  console.log("Server listening port 3000");
+});
